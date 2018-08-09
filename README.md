@@ -4,10 +4,10 @@
 
 # FQ
 
-- Application started, but the rule doesn't work
+- Application started, but the rule doesn't work, look at [this](https://issues.jboss.org/browse/DROOLS-1540)
         
         that maybe a big bug, the official has solved the bug, you can find the answer here,
-         [DROOLS-1540](https://issues.jboss.org/browse/DROOLS-1540), in short, your pom.xml should not include following dependency
+         in short, your pom.xml should not include following dependency
         
         <dependency>
         <groupId>org.springframework.boot</groupId>
