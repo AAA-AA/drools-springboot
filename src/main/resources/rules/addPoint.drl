@@ -1,0 +1,56 @@
+package com.github.drools.drools;
+import com.github.drools.model.PointDomain
+import com.github.drools.checker.PointChecker
+
+rule birthDayPoint
+    salience 100
+    lock-on-active true
+    when
+        $pointDomain: PointDomain(birthDay == true)
+    then
+        $pointDomain.setPoint($pointDomain.getPoint()*2);
+        $pointDomain.recordPointLog($pointDomain.getUserName(),"使用birthDayPoint规则，当前point:"+$pointDomain.getPoint());
+end
+
+rule buyNum
+    salience 95
+    lock-on-active true
+    when
+        $pointDomain: PointDomain(buyNum > 2, backNum < 1)
+    then
+        $pointDomain.setPoint($pointDomain.getPoint()+$pointDomain.getBuyNum()*12);
+        $pointDomain.recordPointLog($pointDomain.getUserName(),"使用buyNum规则，当前point:"+$pointDomain.getPoint());
+end
+
+rule billThisMonthPoint
+    salience 90
+    lock-on-active true
+    date-effective "2018-08-07 13:20:23"
+    date-expires "2018-08-08 17:20:23"
+    when
+        $pointDomain: PointDomain(billThisMonth >= 3)
+    then
+        $pointDomain.setPoint($pointDomain.getPoint()+(int)($pointDomain.getBillThisMonth()/3)*10);
+        $pointDomain.recordPointLog($pointDomain.getUserName(),"使用billThisMonthPoint规则，当前point:"+$pointDomain.getPoint());
+end
+
+rule buyMoneyPoint
+    salience 80
+    lock-on-active true
+    when
+        $pointDomain: PointDomain(buyMoney >= 100)
+    then
+        $pointDomain.setPoint($pointDomain.getPoint()+(int)($pointDomain.getBuyMoney()/100)*10);
+        $pointDomain.recordPointLog($pointDomain.getUserName(),"使用buyMoneyPoint规则，当前point:"+$pointDomain.getPoint());
+end
+
+rule allFitPoint
+    salience 70
+    lock-on-active true
+    when
+        $pointDomain: PointDomain(PointChecker.checkNotNull(buyNum,billThisMonth,buyMoney) && (buyNum >=5 && billThisMonth >=3 && buyMoney >=10))
+    then
+        $pointDomain.setPoint($pointDomain.getPoint()+100);
+        $pointDomain.recordPointLog($pointDomain.getUserName(),"使用allFitPoint规则，当前point:"+$pointDomain.getPoint());
+end
+
